@@ -19,3 +19,8 @@ Este endpoint actualizará la etapa del candidato movido. Permite modificar la f
 # Prompt 3 
 Ahora implementa las pantallas en el frontend correspondientes a estos 2 nuevos endpoints.
 
+# Prompt 4
+Create the necessary initial data as a script to insert into the database to display information from these 2 new endpoint :
+GET /positions/:id/candidates
+PUT /candidates/:id/stage
+

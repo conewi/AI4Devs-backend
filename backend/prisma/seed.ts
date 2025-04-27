@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import * as process from 'process';
 
 const prisma = new PrismaClient();
 
@@ -63,6 +64,28 @@ async function main() {
       contactInfo: 'hr@lti.com',
       requirements: 'Master degree in Data Science or related field, proficiency in Python and R',
       responsibilities: 'Analyze data sets to derive business insights and develop predictive models.',
+      companyDescription: 'LTI is a leading HR solutions provider.',
+      applicationDeadline: new Date('2024-12-31')
+    },
+  });
+
+  const position3 = await prisma.position.create({
+    data: {
+      title: 'Frontend Developer',
+      description: 'Build responsive user interfaces',
+      status: 'Open',
+      isVisible: true,
+      location: 'Madrid, Spain',
+      jobDescription: 'Frontend development with React and TypeScript',
+      companyId: company1.id,
+      interviewFlowId: interviewFlow1.id,
+      salaryMin: 45000,
+      salaryMax: 70000,
+      employmentType: 'Full-time',
+      benefits: 'Health insurance, Flexible schedule, Remote work options',
+      contactInfo: 'hr@lti.com',
+      requirements: '2+ years experience with React, HTML, CSS, and JavaScript',
+      responsibilities: 'Develop user interfaces and implement responsive design',
       companyDescription: 'LTI is a leading HR solutions provider.',
       applicationDeadline: new Date('2024-12-31')
     },
@@ -189,6 +212,86 @@ async function main() {
     },
   });
 
+  const candidate4 = await prisma.candidate.create({
+    data: {
+      firstName: 'Maria',
+      lastName: 'Rodriguez',
+      email: 'maria.rodriguez@example.com',
+      phone: '5566778899',
+      address: '101 Oak St',
+      educations: {
+        create: [
+          {
+            institution: 'Universidad Politécnica',
+            title: 'Computer Engineering',
+            startDate: new Date('2018-01-01'),
+            endDate: new Date('2022-12-01'),
+          },
+        ],
+      },
+      workExperiences: {
+        create: [
+          {
+            company: 'Global Solutions',
+            position: 'Frontend Developer',
+            description: 'Created responsive UIs using React',
+            startDate: new Date('2022-02-01'),
+            endDate: new Date('2023-06-01'),
+          },
+        ],
+      },
+      resumes: {
+        create: [
+          {
+            filePath: '/resumes/maria_rodriguez.pdf',
+            fileType: 'application/pdf',
+            uploadDate: new Date(),
+          },
+        ],
+      },
+    },
+  });
+
+  const candidate5 = await prisma.candidate.create({
+    data: {
+      firstName: 'Alex',
+      lastName: 'Chen',
+      email: 'alex.chen@example.com',
+      phone: '3344556677',
+      address: '202 Maple Ave',
+      educations: {
+        create: [
+          {
+            institution: 'Stanford University',
+            title: 'MSc Artificial Intelligence',
+            startDate: new Date('2016-09-01'),
+            endDate: new Date('2018-06-01'),
+          },
+        ],
+      },
+      workExperiences: {
+        create: [
+          {
+            company: 'AI Solutions',
+            position: 'Machine Learning Engineer',
+            description: 'Developed ML models for recommendation systems',
+            startDate: new Date('2018-07-01'),
+            endDate: new Date('2022-12-01'),
+          },
+        ],
+      },
+      resumes: {
+        create: [
+          {
+            filePath: '/resumes/alex_chen.pdf',
+            fileType: 'application/pdf',
+            uploadDate: new Date(),
+          },
+        ],
+      },
+    },
+  });
+
   // Create Interview Types
   const interviewType1 = await prisma.interviewType.create({
     data: {
@@ -211,9 +314,14 @@ async function main() {
     },
   });
 
-  
+  const interviewType4 = await prisma.interviewType.create({
+    data: {
+      name: 'Final Interview',
+      description: 'Final round with senior management',
+    },
+  });
 
-  // Create Interview Steps
+  // Create Interview Steps for software development flow
   const interviewStep1 = await prisma.interviewStep.create({
     data: {
       interviewFlowId: interviewFlow1.id,
@@ -237,7 +345,71 @@ async function main() {
       interviewFlowId: interviewFlow1.id,
       interviewTypeId: interviewType3.id,
       name: 'Manager Interview',
+      orderIndex: 3,
+    },
+  });
+
+  const interviewStep4 = await prisma.interviewStep.create({
+    data: {
+      interviewFlowId: interviewFlow1.id,
+      interviewTypeId: interviewType4.id,
+      name: 'Final Decision',
+      orderIndex: 4,
+    },
+  });
+
+  const interviewStep5 = await prisma.interviewStep.create({
+    data: {
+      interviewFlowId: interviewFlow1.id,
+      interviewTypeId: interviewType1.id,
+      name: 'Offer',
+      orderIndex: 5,
+    },
+  });
+
+  // Create Interview Steps for data science flow
+  const dsInterviewStep1 = await prisma.interviewStep.create({
+    data: {
+      interviewFlowId: interviewFlow2.id,
+      interviewTypeId: interviewType1.id,
+      name: 'Initial Screening',
+      orderIndex: 1,
+    },
+  });
+
+  const dsInterviewStep2 = await prisma.interviewStep.create({
+    data: {
+      interviewFlowId: interviewFlow2.id,
+      interviewTypeId: interviewType2.id,
+      name: 'Technical Assessment',
       orderIndex: 2,
+    },
+  });
+
+  const dsInterviewStep3 = await prisma.interviewStep.create({
+    data: {
+      interviewFlowId: interviewFlow2.id,
+      interviewTypeId: interviewType2.id,
+      name: 'Case Study',
+      orderIndex: 3,
+    },
+  });
+
+  const dsInterviewStep4 = await prisma.interviewStep.create({
+    data: {
+      interviewFlowId: interviewFlow2.id,
+      interviewTypeId: interviewType3.id,
+      name: 'Team Interview',
+      orderIndex: 4,
+    },
+  });
+
+  const dsInterviewStep5 = await prisma.interviewStep.create({
+    data: {
+      interviewFlowId: interviewFlow2.id,
+      interviewTypeId: interviewType4.id,
+      name: 'Final Decision',
+      orderIndex: 5,
     },
   });
 
@@ -260,73 +432,271 @@ async function main() {
     },
   });
 
-  // Create Applications
+  const employee3 = await prisma.employee.create({
+    data: {
+      companyId: company1.id,
+      name: 'Elena Martinez',
+      email: 'elena.martinez@lti.com',
+      role: 'Technical Lead',
+    },
+  });
+
+  const employee4 = await prisma.employee.create({
+    data: {
+      companyId: company1.id,
+      name: 'David Wang',
+      email: 'david.wang@lti.com',
+      role: 'CTO',
+    },
+  });
+
+  // Create Applications for position 1 (Software Engineer) in different stages
   const application1 = await prisma.application.create({
     data: {
       positionId: position1.id,
       candidateId: candidate1.id,
-      applicationDate: new Date(),
-      currentInterviewStep: interviewStep2.id,
+      applicationDate: new Date('2023-11-15'),
+      currentInterviewStep: interviewStep3.id, // Manager Interview
     },
   });
 
   const application2 = await prisma.application.create({
     data: {
-      positionId: position2.id,
-      candidateId: candidate1.id,
-      applicationDate: new Date(),
-      currentInterviewStep: interviewStep2.id,
+      positionId: position1.id,
+      candidateId: candidate2.id,
+      applicationDate: new Date('2023-11-10'),
+      currentInterviewStep: interviewStep2.id, // Technical Interview
     },
   });
 
   const application3 = await prisma.application.create({
     data: {
       positionId: position1.id,
-      candidateId: candidate2.id,
-      applicationDate: new Date(),
-      currentInterviewStep: interviewStep2.id,
+      candidateId: candidate3.id,
+      applicationDate: new Date('2023-12-01'),
+      currentInterviewStep: interviewStep1.id, // Initial Screening
     },
   });
 
   const application4 = await prisma.application.create({
     data: {
       positionId: position1.id,
-      candidateId: candidate3.id,
-      applicationDate: new Date(),
-      currentInterviewStep: interviewStep1.id,
+      candidateId: candidate4.id,
+      applicationDate: new Date('2023-10-20'),
+      currentInterviewStep: interviewStep4.id, // Final Decision
     },
   });
 
+  const application5 = await prisma.application.create({
+    data: {
+      positionId: position1.id,
+      candidateId: candidate5.id,
+      applicationDate: new Date('2023-10-05'),
+      currentInterviewStep: interviewStep5.id, // Offer
+    },
+  });
 
-  // Create Interviews
+  // Create applications for position 2 (Data Scientist)
+  const application6 = await prisma.application.create({
+    data: {
+      positionId: position2.id,
+      candidateId: candidate1.id,
+      applicationDate: new Date('2023-11-20'),
+      currentInterviewStep: dsInterviewStep2.id, // Technical Assessment
+    },
+  });
+
+  const application7 = await prisma.application.create({
+    data: {
+      positionId: position2.id,
+      candidateId: candidate5.id,
+      applicationDate: new Date('2023-11-05'),
+      currentInterviewStep: dsInterviewStep3.id, // Case Study
+    },
+  });
+
+  // Create applications for position 3 (Frontend Developer)
+  const application8 = await prisma.application.create({
+    data: {
+      positionId: position3.id,
+      candidateId: candidate2.id,
+      applicationDate: new Date('2023-12-05'),
+      currentInterviewStep: interviewStep1.id, // Initial Screening
+    },
+  });
+
+  const application9 = await prisma.application.create({
+    data: {
+      positionId: position3.id,
+      candidateId: candidate4.id,
+      applicationDate: new Date('2023-11-25'),
+      currentInterviewStep: interviewStep2.id, // Technical Interview
+    },
+  });
+
+  // Create Interviews with varied scores for position 1 (Software Engineer)
   await prisma.interview.createMany({
     data: [
+      // John Doe - Software Engineer
       {
         applicationId: application1.id,
         interviewStepId: interviewStep1.id,
         employeeId: employee1.id,
-        interviewDate: new Date(),
+        interviewDate: new Date('2023-11-18'),
         result: 'Passed',
-        score: 5,
-        notes: 'Good technical skills',
+        score: 8,
+        notes: 'Strong communication skills, good cultural fit',
       },
+      {
+        applicationId: application1.id,
+        interviewStepId: interviewStep2.id,
+        employeeId: employee3.id,
+        interviewDate: new Date('2023-11-25'),
+        result: 'Passed',
+        score: 7,
+        notes: 'Good technical skills, especially in backend development',
+      },
+      
+      // Jane Smith - Software Engineer
       {
         applicationId: application2.id,
         interviewStepId: interviewStep1.id,
         employeeId: employee1.id,
-        interviewDate: new Date(),
+        interviewDate: new Date('2023-11-12'),
         result: 'Passed',
-        score: 5,
-        notes: 'Excellent data analysis skills',
+        score: 9,
+        notes: 'Excellent communication, very enthusiastic about the role',
       },
+      
+      // Carlos García - Software Engineer
       {
         applicationId: application3.id,
         interviewStepId: interviewStep1.id,
         employeeId: employee1.id,
-        interviewDate: new Date(),
+        interviewDate: new Date('2023-12-03'),
+        result: 'In Progress',
+        score: null,
+        notes: 'Scheduled for initial screening',
+      },
+      
+      // Maria Rodriguez - Software Engineer
+      {
+        applicationId: application4.id,
+        interviewStepId: interviewStep1.id,
+        employeeId: employee1.id,
+        interviewDate: new Date('2023-10-22'),
         result: 'Passed',
-        score: 4,
-        notes: 'Good technical skills',
+        score: 8,
+        notes: 'Good fit for the company culture',
+      },
+      {
+        applicationId: application4.id,
+        interviewStepId: interviewStep2.id,
+        employeeId: employee3.id,
+        interviewDate: new Date('2023-10-29'),
+        result: 'Passed',
+        score: 9,
+        notes: 'Excellent frontend skills and knowledge of modern frameworks',
+      },
+      {
+        applicationId: application4.id,
+        interviewStepId: interviewStep3.id,
+        employeeId: employee2.id,
+        interviewDate: new Date('2023-11-05'),
+        result: 'Passed',
+        score: 8,
+        notes: 'Team seems excited to work with her',
+      },
+      
+      // Alex Chen - Software Engineer
+      {
+        applicationId: application5.id,
+        interviewStepId: interviewStep1.id,
+        employeeId: employee1.id,
+        interviewDate: new Date('2023-10-07'),
+        result: 'Passed',
+        score: 9,
+        notes: 'Excellent communication and experience',
+      },
+      {
+        applicationId: application5.id,
+        interviewStepId: interviewStep2.id,
+        employeeId: employee3.id,
+        interviewDate: new Date('2023-10-14'),
+        result: 'Passed',
+        score: 10,
+        notes: 'Outstanding technical skills across full stack',
+      },
+      {
+        applicationId: application5.id,
+        interviewStepId: interviewStep3.id,
+        employeeId: employee2.id,
+        interviewDate: new Date('2023-10-21'),
+        result: 'Passed',
+        score: 9,
+        notes: 'Great potential to lead projects in the future',
+      },
+      {
+        applicationId: application5.id,
+        interviewStepId: interviewStep4.id,
+        employeeId: employee4.id,
+        interviewDate: new Date('2023-10-28'),
+        result: 'Passed',
+        score: 9,
+        notes: 'Strongly recommended for hire',
+      },
+      
+      // John Doe - Data Scientist
+      {
+        applicationId: application6.id,
+        interviewStepId: dsInterviewStep1.id,
+        employeeId: employee1.id,
+        interviewDate: new Date('2023-11-22'),
+        result: 'Passed',
+        score: 7,
+        notes: 'Good background in data analysis',
+      },
+      
+      // Alex Chen - Data Scientist
+      {
+        applicationId: application7.id,
+        interviewStepId: dsInterviewStep1.id,
+        employeeId: employee1.id,
+        interviewDate: new Date('2023-11-08'),
+        result: 'Passed',
+        score: 10,
+        notes: 'Perfect fit for the data science role',
+      },
+      {
+        applicationId: application7.id,
+        interviewStepId: dsInterviewStep2.id,
+        employeeId: employee3.id,
+        interviewDate: new Date('2023-11-15'),
+        result: 'Passed',
+        score: 9,
+        notes: 'Excellent ML knowledge and practical experience',
+      },
+      
+      // Jane Smith - Frontend Developer
+      {
+        applicationId: application8.id,
+        interviewStepId: interviewStep1.id,
+        employeeId: employee1.id,
+        interviewDate: new Date('2023-12-07'),
+        result: 'In Progress',
+        score: null,
+        notes: 'Recently applied, screening scheduled',
+      },
+      
+      // Maria Rodriguez - Frontend Developer
+      {
+        applicationId: application9.id,
+        interviewStepId: interviewStep1.id,
+        employeeId: employee1.id,
+        interviewDate: new Date('2023-11-27'),
+        result: 'Passed',
+        score: 8,
+        notes: 'Good communication skills, relevant frontend experience',
       }
     ],
   });

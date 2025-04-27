@@ -10,6 +10,10 @@
         "test": "jest",
         "prisma:init": "npx prisma init",
         "prisma:generate": "npx prisma generate",
+        "prisma:migrate": "npx prisma migrate dev",
+        "prisma:seed": "ts-node prisma/seed.ts",
+        "db:reset": "npx prisma migrate reset --force",
+        "db:setup": "npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed",
         "start:prod": "npm run build && npm start"
     },
     "keywords": [],

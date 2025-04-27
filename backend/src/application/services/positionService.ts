@@ -3,6 +3,48 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 /**
+ * Get all positions
+ * @returns Array of positions
+ */
+export const getAllPositionsService = async () => {
+    try {
+        const positions = await prisma.position.findMany({
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                location: true,
+                status: true,
+                isVisible: true,
+                company: {
+                    select: {
+                        name: true
+                    }
+                }
+            },
+            where: {
+                isVisible: true
+            },
+            orderBy: {
+                title: 'asc'
+            }
+        });
+
+        return positions.map(position => ({
+            id: position.id,
+            title: position.title,
+            description: position.description,
+            location: position.location,
+            status: position.status,
+            companyName: position.company.name
+        }));
+    } catch (error) {
+        console.error('Error fetching positions:', error);
+        throw error;
+    }
+};
+
+/**
  * Get all candidates for a specific position with their average score
  * @param positionId Position ID
  * @returns Array of candidates with their information

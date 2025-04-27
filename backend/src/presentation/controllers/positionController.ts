@@ -1,5 +1,23 @@
 import { Request, Response } from 'express';
-import { getCandidatesByPosition, updateCandidateInterviewStep } from '../../application/services/positionService';
+import { getCandidatesByPosition, updateCandidateInterviewStep, getAllPositionsService } from '../../application/services/positionService';
+
+/**
+ * Get all positions
+ * @param req Request
+ * @param res Response
+ */
+export const getAllPositions = async (req: Request, res: Response) => {
+    try {
+        const positions = await getAllPositionsService();
+        res.json(positions);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(400).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+};
 
 /**
  * Get all candidates for a specific position
